@@ -31,5 +31,5 @@ func handler(w http.ResponseWriter, r *http.Request) {
         if name == "" {
                 name = "World"
         }
-        fmt.Fprintf(w, "Bonjour %s!\n", name)
+        fmt.Fprintf(w, "Bonjour ALO %s!\n", name)
 }
