@@ -3,14 +3,34 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"log"
 	"net/http"
 	"os"
 )
 
+const (
+  Port = ":8080"
+)
+
+func serveStatic(w http.ResponseWriter, r *http.Request) {  
+  t, err := template.ParseFiles("index.html")
+    if err != nil {
+        fmt.Println(err)
+    }
+    items := struct {
+        Country string
+        City string
+    }{
+        Country: "France",
+        City: "Paris",
+    }
+    t.Execute(w, items)
+}
+
 func main() {
         log.Print("starting server...")
-        http.HandleFunc("/", handler)
+        http.HandleFunc("/",serveStatic)
 
         // Determine port for HTTP service.
         port := os.Getenv("PORT")
@@ -26,10 +46,3 @@ func main() {
         }
 }
 
-func handler(w http.ResponseWriter, r *http.Request) {
-        name := os.Getenv("NAME")
-        if name == "" {
-                name = "World"
-        }
-        fmt.Fprintf(w, "Bonjour ALO %s!\n", name)
-}
